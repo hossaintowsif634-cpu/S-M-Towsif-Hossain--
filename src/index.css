@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  
+  --color-navy-900: #0a0f1d;
+  --color-navy-800: #111827;
+  --color-cyan-neon: #00f2ff;
+  --color-purple-neon: #bc13fe;
+  --color-gold-accent: #d4af37;
+}
+
+@layer base {
+  body {
+    @apply bg-navy-900 text-slate-200 font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+}
+
+.glass-card {
+  @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl;
+}
+
+.neon-border-cyan {
+  @apply border-cyan-neon/30 shadow-[0_0_15px_rgba(0,242,255,0.1)];
+}
+
+.neon-border-purple {
+  @apply border-purple-neon/30 shadow-[0_0_15px_rgba(188,19,254,0.1)];
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-neon to-purple-neon;
+}
+
+.gradient-bg {
+  @apply bg-gradient-to-br from-cyan-neon/20 via-transparent to-purple-neon/20;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-navy-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-cyan-neon/50 transition-colors;
+}
