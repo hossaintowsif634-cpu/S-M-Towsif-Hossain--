@@ -7,15 +7,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-declare module "express-session" {
-  interface SessionData {
-    user: any;
-  }
-}
-
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   app.use(express.json());
   app.use(cookieParser());
@@ -25,7 +19,7 @@ async function startServer() {
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "none",
         httpOnly: true,
       },
@@ -37,7 +31,7 @@ async function startServer() {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
     const options = {
       redirect_uri: `${process.env.APP_URL}/auth/google/callback`,
-      client_id: process.env.GOOGLE_CLIENT_ID!,
+      client_id: process.env.GOOGLE_CLIENT_ID,
       access_type: "offline",
       response_type: "code",
       prompt: "consent",
@@ -52,7 +46,7 @@ async function startServer() {
   });
 
   app.get("/auth/google/callback", async (req, res) => {
-    const code = req.query.code as string;
+    const code = req.query.code;
 
     try {
       const { data } = await axios.post("https://oauth2.googleapis.com/token", {
@@ -89,7 +83,7 @@ async function startServer() {
           </body>
         </html>
       `);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Google OAuth Error:", error.response?.data || error.message);
       res.status(500).send("Authentication failed");
     }
